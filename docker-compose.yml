@@ -53,8 +53,8 @@ services:
             - kafka-net
 
 volumes:
-  kafka_data:
+    kafka_data:
 
 networks:
-  kafka-net:
-    driver: bridge
+    kafka-net:
+        driver: bridge
