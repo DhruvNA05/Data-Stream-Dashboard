@@ -74,7 +74,7 @@ async def stream_ticks(producer: Producer) -> None:
             if symbol is None or price is None:
                 continue
 
-            tick = {
+            tick = { # JSON shape and structure use in consumer
                 "symbol": symbol,
                 "price": float(price),
                 "time": time or datetime.now(timezone.utc).isoformat(),
