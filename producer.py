@@ -109,4 +109,7 @@ async def main() -> None:
         producer.flush(10)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt: # Exit producer cleanly
+            print('\nTERMINATED PRODUCER')
