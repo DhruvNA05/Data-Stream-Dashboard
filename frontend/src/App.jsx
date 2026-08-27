@@ -17,16 +17,16 @@ export default function App() {
       {symbols.length === 0 && <p>Waiting for data...</p>}
       {symbols.map((symbol) => (
         <div key = {symbol} style = {{ marginBottom: 32}}>
-          <h3>{Symbol} </h3>
+          <h3>{symbol} </h3>
           <ResponsiveContainer width = "100%" height = {250}>
             <LineChart data = {dataBySymbol[symbol]}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
-                tickFormatter={(t) => new Date(t*1000).toLocaleTimeString()}
+                tickFormatter={(t) => new Date(t).toLocaleTimeString()}
                 />
               <YAxis domain = {['auto', 'auto']} />
-              <Tooltip labelFormatter={(t) => new Date(t*1000).toLocaleTimeString()} />
+              <Tooltip labelFormatter={(t) => new Date(t).toLocaleTimeString()} />
               <Line type= "monotone" dataKey= "price" dot = {false} isAnimationActive = {false} />
             </LineChart>
           </ResponsiveContainer>

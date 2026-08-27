@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from 'react'
 const MAX_POINTS = 100;
 
 export function useLiveData(url) {
-    const [dataBySymbol, setDataSymbol] = useState({});
+    const [dataBySymbol, setDataBySymbol] = useState({});
     const wsRef = useRef(null);
 
     useEffect(() => {
