@@ -1,8 +1,7 @@
 from confluent_kafka import Consumer
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from contextlib import asynccontextmanager
 import json, asyncio, threading
-
-app = FastAPI()
 
 active_connections: set[WebSocket] = set() # Set to store active connections in
 
@@ -46,24 +45,27 @@ async def broadcast(message: dict):
         try: # Send data to client
             await ws.send_text(data)
         except Exception: # If the client can't be reach mark it for removal
-            dead.append[ws]
+            dead.append(ws)
     for ws in dead:
         active_connections.discard(ws)
 
-@app.on_event("startup")
-async def startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     loop = asyncio.get_running_loop()
+    app.state.stop_event = threading.Event()
     app.state.consumer_thread = threading.Thread(
         target = main,
-        args= (loop, app.state.stop_event),
+        args = (loop, app.state.stop_event),
         daemon = True
     )
-    app.state.consumer_thread.start() # Start running main concurrently with the FastAPI app
+    app.state.consumer_thread.start() # Run main concurrently with the FastAPI
 
-@app.on_event("shutdown")
-async def shutdown():
+    yield # Everything before this is run at startup, everything after during termination
+
     app.state.stop_event.set() # Set flag in main to True, stops polling the broker and begins shutdown of main
-    app.state.consumer_thread.join(timeout = 5) # Give main a few seconds to close the consumer
+    app.state.consumer_thread.join (timeout = 5) # Give main 5 seconds to close the consumer
+
+app = FastAPI(lifespan=lifespan)
 
 @app.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket):
