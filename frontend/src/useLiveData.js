@@ -11,18 +11,22 @@ export function useLiveData(url) {
         const ws = new WebSocket(url);
         wsRef.current = ws;
 
+        ws.onopen = () => {
+            console.log("Websocket connected");
+        };
+
         ws.onmessage = (event) => {
 
             const point = JSON.parse(event.data);
-            const {symbol, price, timestamp} = point;
+            const {symbol, price, time} = point;
 
             setDataBySymbol((prev) => {
                 const existing = prev[symbol] || [];
-                const updated = [...existing, {time: timestamp, price}].slice(-MAX_POINTS);
+                const updated = [...existing, {time, price}].slice(-MAX_POINTS);
                 return {...prev, [symbol]: updated};
             });
         };
-        ws.oneerror = (err) => console.error('Websocket error:', err);
+        ws.onerror = (err) => console.error('Websocket error:', err);
         return () => {
             ws.close();
         }
