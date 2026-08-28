@@ -56,7 +56,7 @@ services:
         container_name: producer
         command: python producer.py
         environment:
-            - KAFKA_BROKER = kafka:19092
+            - KAFKA_BROKER=kafka:19092
         depends_on:
             kafka:
                 condition: service_healthy
@@ -71,7 +71,7 @@ services:
         ports:
             - "8000:8000"
         environment:
-            - KAFKA_BROKER = kafka:19092
+            - KAFKA_BROKER=kafka:19092
         depends_on:
             kafka:
                 condition: service_healthy

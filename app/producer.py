@@ -69,7 +69,7 @@ async def stream_ticks(producer: Producer) -> None:
             price = msg.get("price")
             time = msg.get("time")
 
-            logger.info("Raw ticker: symbol=%s price %s", symbol, price)
+            # logger.info("Raw ticker: symbol=%s price %s", symbol, price)
 
             if symbol is None or price is None:
                 continue
@@ -88,7 +88,7 @@ async def stream_ticks(producer: Producer) -> None:
                 callback = delivery_report
             )
             producer.poll(0)
-            logger.info("Produced: %s", tick)
+            # logger.info("Produced: %s", tick)
 
 async def main() -> None:
     producer = build_kafka_producer()
