@@ -1,13 +1,13 @@
 from confluent_kafka import Consumer
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from contextlib import asynccontextmanager
-import json, asyncio, threading
+import json, asyncio, threading, os
 
 active_connections: set[WebSocket] = set() # Set to store active connections in
 
 def main(loop: asyncio.AbstractEventLoop, stop_event: threading.Event):
     consumer_config = {
-        'bootstrap.servers': 'localhost:9092',
+        'bootstrap.servers': os.environ.get("KAFKA_BROKER", 'localhost:9092'),
         'group.id': 'coinbase_cluster',
         'auto.offset.reset': 'latest' # Start reading from the latest offset
     }

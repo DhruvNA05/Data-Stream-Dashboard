@@ -49,7 +49,41 @@ services:
                 condition: service_healthy
         networks:
             - kafka-net
-
+    producer:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: producer
+        command: python producer.py
+        environment:
+            - KAFKA_BROKER = kafka:19092
+        depends on:
+            kafka:
+                condition: service_healthy
+        networks:
+            - kafka-net
+    consumer:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: consumer
+        command: uvicorn consumer:app --host 0.0.0.0 --port 8000
+        ports:
+            - "8000:8000"
+        environment:
+            - KAFKA_BROKER = kafka:19092
+        depends on:
+            kafka:
+                condition: service_healthy
+        networks:
+            - kafka-net
+    frontend:
+        build: ./app/frontend
+        container_name: frontend
+        ports:
+            - "5173:5173"
+        networks:
+            - kafka-net
 volumes:
     kafka_data:
 
