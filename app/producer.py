@@ -15,7 +15,7 @@ logger = logging.getLogger("producer")
 coinbase_endpoint_url = "wss://ws-feed.exchange.coinbase.com"
 PRODUCT_IDS = ["BTC-USD", "ETH-USD"]
 KAFKA_TOPIC = "crypto-prices"
-KAFKA_BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BROKER", 'localhost:9092'),
+KAFKA_BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BROKER", 'localhost:9092')
 
 # Coinbase subscription request
 COINBASE_SUBSCRIPTION_MSG = {
