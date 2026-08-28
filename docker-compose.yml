@@ -57,7 +57,7 @@ services:
         command: python producer.py
         environment:
             - KAFKA_BROKER = kafka:19092
-        depends on:
+        depends_on:
             kafka:
                 condition: service_healthy
         networks:
@@ -72,7 +72,7 @@ services:
             - "8000:8000"
         environment:
             - KAFKA_BROKER = kafka:19092
-        depends on:
+        depends_on:
             kafka:
                 condition: service_healthy
         networks:
