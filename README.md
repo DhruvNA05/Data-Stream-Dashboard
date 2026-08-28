@@ -7,3 +7,6 @@ Command to run React Frontend: npm run dev
 
 Run it All: docker compose up --build
 Deactivate: docker compose down
+
+http://localhost:5173/ is the link to the frontend react site
+http://localhost:8080/ for kafka ui
