@@ -18,7 +18,7 @@ def main(loop: asyncio.AbstractEventLoop, stop_event: threading.Event):
         while not stop_event.is_set():
             raw_msg = consumer.poll(1)
             if(raw_msg) is None:
-                print('Waiting...')
+                # print('Waiting...')
                 continue
             elif raw_msg.error() is not None:
                 print('ERROR:', raw_msg.error())
